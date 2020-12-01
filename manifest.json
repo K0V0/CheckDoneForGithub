@@ -1,0 +1,48 @@
+{
+  "manifest_version": 2,
+
+  "name": "CheckDone for GitHub readmes",
+  "description": "This extensions replaces list bullets in GitHub readme page with checkboxes",
+  "version": "1.0",
+
+  "browser_action": {
+   "default_icon": "icon.png",
+   "default_popup": "popup.html"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["https://github.com/*"],
+      "js": [
+        "lib/jquery-3.5.1.min.js",
+        "lib/md5.js",
+        //"js/inits.js",
+        "js/functions.js",
+        "js/content_functions.js",
+        "js/content.js"
+      ],
+      "css": [
+        "css/content.css"
+      ] 
+    }
+  ],
+
+  "background": {
+    "scripts": [
+      "lib/jquery-3.5.1.min.js",
+      "lib/md5.js",
+      "js/functions.js",
+      "js/inits.js",
+      "js/background.js"
+    ]
+  },
+
+  "permissions": [
+   "activeTab",
+   "storage"
+  ]
+}
+
+/*
+^(https\:\/\/github\.com\/)(.)+(\.md)$
+*/

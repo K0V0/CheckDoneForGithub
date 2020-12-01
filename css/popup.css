@@ -1,0 +1,21 @@
+html {
+
+}
+
+h1, h2 {
+	margin:0;
+}
+
+
+body.main {
+	min-width: 20em;
+}
+
+body.main h1 {
+	font-size: 2em;
+} 
+
+body.main h2 {
+	font-size: 1.125em;
+}
+
