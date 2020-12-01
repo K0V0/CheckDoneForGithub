@@ -16,7 +16,6 @@
       "js": [
         "lib/jquery-3.5.1.min.js",
         "lib/md5.js",
-        //"js/inits.js",
         "js/functions.js",
         "js/content_functions.js",
         "js/content.js"
@@ -42,7 +41,3 @@
    "storage"
   ]
 }
-
-/*
-^(https\:\/\/github\.com\/)(.)+(\.md)$
-*/

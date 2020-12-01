@@ -30,7 +30,3 @@ function getData(obj, id) {
 		}
 	}
 }
-
-function pushOrUpdateData(obj, id) {
-
-}

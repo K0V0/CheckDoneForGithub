@@ -6,6 +6,8 @@ nema pristup k html rozsirenia samotneho (popup)
 function Content() {
 	this.FX = new ContentFunctions();
 	this.current_page_hash;
+	this.mdContainer;
+	this.listItems;
 	this.data;
 	this.currentPageData;
 	this.currentCheckboxes;
@@ -38,14 +40,14 @@ Content.prototype = {
 
 	displayCheckboxes: function() {
 		var totok = this;
-		var mdContainer = $(document).find('#readme');
+		totok.mdContainer = $(document).find('#readme');
 
 		// generate unique hashes for all li elements based on its text
-		mdContainer.find('li').each(function() {
+		totok.mdContainer.find('li').each(function() {
 			totok.FX.addMD5id($(this));
 		});
 
-		mdContainer.find('li').each(function() {
+		totok.mdContainer.find('li').each(function() {
 			// draw checkbox with belonging state according to data from store
 			//console.log(totok.FX.getCheckboxState(totok.currentCheckboxes, $(this).attr('id')));
 			totok.FX.appendCheckbox(
@@ -54,9 +56,9 @@ Content.prototype = {
 			);
 		});
 
-		var list_items = mdContainer.find('input[type=checkbox].git-taskchecker-checkbox')
+		totok.listItems = totok.mdContainer.find('input[type=checkbox].git-taskchecker-checkbox')
 
-		list_items.on('click', function() {
+		totok.listItems.on('click', function() {
 			var is_checked = $(this).is(':checked'); 
 			// ^^ new state already there after click even if inside this onclick handler
 			var	scope_ancestors = $(this).siblings().find('input[type=checkbox].git-taskchecker-checkbox');
@@ -68,7 +70,7 @@ Content.prototype = {
 		});
 
 		// reaguje aj na programaticku zmenu
-		list_items.on('change', function() { 
+		totok.listItems.on('change', function() { 
 			var is_checked = $(this).is(':checked');
 			// budu updatovane aj "rodicovske" premene 'currentPageData' a 'data'
 			totok.FX.updateCheckboxState(
@@ -86,21 +88,24 @@ Content.prototype = {
 	},
 
 	resetCheckboxes: function() {
-
+		this.listItems.attr('checked', false);
+		this.listItems.trigger('change');
+		this.commitToStore();
 	},
 
 	commitToStore: function() {
-		console.log(this.currentCheckboxes);
-		console.log(this.currentPageData);
-		console.log(this.data);
-
-		chrome.runtime.sendMessage({
-			method: "updateLocalStorage",
-			key: "pages",
-			data: compressData(this.data)
-		}, function(response) {
-	  		console.log("sent to store");
-		});
+		var totok = this;
+		clearTimeout(totok.store_timer);
+		// prevent too many requests toward Store if checked multiple boxes at once (parent -> children)
+		totok.store_timer = setTimeout(function() { 
+			chrome.runtime.sendMessage({
+				method: "updateLocalStorage",
+				key: "pages",
+				data: compressData(totok.data)
+			}, function(response) {
+		  		console.log("sent to store");
+			});
+		}, totok.store_wait_time);
 	}
 
 }

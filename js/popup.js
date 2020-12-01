@@ -26,7 +26,7 @@ Popup.prototype = {
 
         toto.resetButton.addEventListener('click', function() { 
 
-            toto.FX.sendBroadcast("removeCheckboxes");
+            toto.FX.sendBroadcast("resetCheckboxes");
 
         }, false);
     }

@@ -39,7 +39,9 @@ ContentFunctions.prototype = {
 		var prep_elem = $('<input type="checkbox" id="task-' + elem.attr('id') + '" class="git-taskchecker-checkbox">');
 		if (checked === true) {
 			// do not add prop when false, children items in list then not manipulable by parent
-			prep_elem.prop('checked', checked);
+			//prep_elem.prop('checked', checked);
+			// attr better
+			prep_elem.attr('checked', checked);
 		}
 		elem.css({ 'position':'relative' });
 		elem.prepend(prep_elem);

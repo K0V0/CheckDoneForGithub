@@ -5,10 +5,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     } 
 
     else if (request.method == "updateLocalStorage") {
-    	// uploadnut data do local storu
-    	console.log(request.key);
     	localStorage[request.key] = request.data;
-      	//sendResponse("OK");
+    	sendResponse();
     } 
 
     else {
