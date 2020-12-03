@@ -1,6 +1,6 @@
 # CheckDone for GitHub
 
-CheckDone is extension that transforms ordered and unordered lists items in GitHub readme.md sections into checkable TODO lists by adding checkboxes at the begining of every item in the list.
+CheckDone is extension that transforms ordered and unordered lists items in GitHub readme.md sections into checkable TODO lists by adding checkboxes at the begining of every item in the list.  
 Extension is only active if You turn it on for given site (repository) and selected checkboxes and options are offcourse remebered when page/browser closed and You visit it next time.
 
 ## Install
