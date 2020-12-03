@@ -19,3 +19,49 @@ body.main h2 {
 	font-size: 1.125em;
 }
 
+body.main button {
+	margin: 0.25em;
+	font-size: 1.5em;
+	line-height: 1.5em;
+	color: white;
+	border: none;
+	border-radius:0.25em;
+}
+
+body.main button {
+	transition: background-color 0.125s ease-in-out;
+	cursor: pointer;
+}
+
+body.main button#enable {
+	background-color: #2EA44F;
+}
+
+body.main button#enable:before {
+	content: 'Enable for this page';
+}
+
+body.main button#enable:hover {
+	background-color: #2C974B;
+}
+
+body.main button#enable.enabled {
+	background-color: #CB2431;
+}
+
+body.main button#enable.enabled:before {
+	content: 'Disable (Hide) for this page'
+}
+
+body.main button#enable.enabled:hover {
+	background-color: #FF001B;
+}
+
+body.main button#reset {
+	background-color: #CB2431;
+}
+
+body.main button#reset:hover {
+	background-color: #FF001B;
+}
+

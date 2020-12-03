@@ -5,14 +5,9 @@ nema pristup k html rozsirenia samotneho (popup)
 
 function Content() {
 	this.FX = new ContentFunctions();
-	this.current_page_hash;
+	this.STORE;
 	this.mdContainer;
 	this.listItems;
-	this.data;
-	this.currentPageData;
-	this.currentCheckboxes;
-	this.store_timer;
-	this.store_wait_time = 250;
 	this.init();
 }
 
@@ -21,20 +16,13 @@ Content.prototype = {
 
 	init: function() {
 		var totok = this;
-		this.current_page_hash = this.FX.currentPageHash();
-
 		chrome.runtime.sendMessage({method: "getLocalStorage", key: "pages"}, function(response) {
-	  		//console.log(response.data);
-		  	totok.data = uncompressData(response.data);
-		  	//console.log(totok.data);
-		  	if (totok.FX.isThisPageEnabled(totok.data) === true) {
-		  		totok.currentPageData = getData(totok.data, totok.current_page_hash);
-		  		totok.currentCheckboxes = totok.currentPageData.data.checkboxes;
-		  		//console.log(totok.currentPageData);
-		  		totok.displayCheckboxes();
-		  	} else { 
-		  		totok.removeCheckboxes(); 
-		  	}
+	  		totok.STORE = new Store(response.data);
+	  		if (totok.STORE.isActiveCurrentPage()) {
+				totok.displayCheckboxes();
+			} else {
+				totok.removeCheckboxes();
+			}
 		});
 	},
 
@@ -47,22 +35,19 @@ Content.prototype = {
 			totok.FX.addMD5id($(this));
 		});
 
+		// draw checkbox with belonging state according to data from store
 		totok.mdContainer.find('li').each(function() {
-			// draw checkbox with belonging state according to data from store
-			//console.log(totok.FX.getCheckboxState(totok.currentCheckboxes, $(this).attr('id')));
 			totok.FX.appendCheckbox(
 				$(this), 
-				totok.FX.getCheckboxState(totok.currentCheckboxes, $(this).attr('id'))
+				totok.STORE.isCheckboxEnabled($(this).attr('id'))
 			);
 		});
 
 		totok.listItems = totok.mdContainer.find('input[type=checkbox].git-taskchecker-checkbox')
 
 		totok.listItems.on('click', function() {
-			var is_checked = $(this).is(':checked'); 
-			// ^^ new state already there after click even if inside this onclick handler
 			var	scope_ancestors = $(this).siblings().find('input[type=checkbox].git-taskchecker-checkbox');
-			scope_ancestors.attr('checked', is_checked);  
+			scope_ancestors.attr('checked', $(this).is(':checked')); // new state already there after click even if inside this onclick handler
 			// ^^ manipulates atribute of element, not val/props, but even by attribute element state can be considered as checked/not
 			//    if manipulated by hand, also val/props are changed, that is why element persist programmatic changes of state from parent
 			//    this is desired behaviuor in this case 
@@ -71,43 +56,25 @@ Content.prototype = {
 
 		// reaguje aj na programaticku zmenu
 		totok.listItems.on('change', function() { 
-			var is_checked = $(this).is(':checked');
-			// budu updatovane aj "rodicovske" premene 'currentPageData' a 'data'
-			totok.FX.updateCheckboxState(
-				totok.currentCheckboxes,
+			totok.STORE.setCheckbox(
 				$(this).attr('id').replace('task-', ''),
-				is_checked
+				$(this).is(':checked')
 			);
-
-			totok.commitToStore();
+			totok.STORE.commit();
 		});
 	},
 
 	removeCheckboxes: function() {
+		// means removes only elements from page, data of checkboxes are persisted
+		// data are persisted if in future turn then user on
 		$(document).find('input.git-taskchecker-checkbox').remove();
 	},
 
 	resetCheckboxes: function() {
 		this.listItems.attr('checked', false);
 		this.listItems.trigger('change');
-		this.commitToStore();
+		this.STORE.commit();
 	},
-
-	commitToStore: function() {
-		var totok = this;
-		clearTimeout(totok.store_timer);
-		// prevent too many requests toward Store if checked multiple boxes at once (parent -> children)
-		totok.store_timer = setTimeout(function() { 
-			chrome.runtime.sendMessage({
-				method: "updateLocalStorage",
-				key: "pages",
-				data: compressData(totok.data)
-			}, function(response) {
-		  		console.log("sent to store");
-			});
-		}, totok.store_wait_time);
-	}
-
 }
 
 
@@ -125,5 +92,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     } else if (rm == "resetCheckboxes") {
     	// reset all to FALSE
     	C.resetCheckboxes();
-    }
+    } 
 });
+
+
+
+
+

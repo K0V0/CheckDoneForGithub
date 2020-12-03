@@ -16,7 +16,9 @@
       "js": [
         "lib/jquery-3.5.1.min.js",
         "lib/md5.js",
-        "js/functions.js",
+        "lib/functions.js",
+        "js/store_functions.js",
+        "js/store.js",
         "js/content_functions.js",
         "js/content.js"
       ],
@@ -30,8 +32,9 @@
     "scripts": [
       "lib/jquery-3.5.1.min.js",
       "lib/md5.js",
-      "js/functions.js",
-      "js/inits.js",
+      "lib/functions.js",
+      "js/store_functions.js",
+      "js/store.js",
       "js/background.js"
     ]
   },

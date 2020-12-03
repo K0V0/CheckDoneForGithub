@@ -1,6 +1,6 @@
-
 function Popup() {
   this.FX = new PopupFunctions();
+  this.STORE;
   this.enableButton = document.getElementById('enable');
   this.resetButton = document.getElementById('reset');
   this.init();
@@ -12,28 +12,31 @@ Popup.prototype = {
     init: function() {
         var toto = this;
 
-        toto.enableButton.addEventListener('click', function() { 
+        chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
 
-            chrome.tabs.getSelected(null, function(tab) {
-                var url_hash = MD5(tab.url);
-                var enabled = initPageData(url_hash);
-                toto.FX.changeButtons(enabled);
-            });
+            toto.STORE = new Store(null, tabs[0].url);
 
-            toto.FX.sendBroadcast("reRenderPage");
+            toto.FX.changeButtons(toto.STORE.isActiveCurrentPage());
 
-        }, false);
+            toto.enableButton.addEventListener('click', function() {
+                toto.STORE.getOrCreateCurrentPage();
+                toto.STORE.switchCurrentPageActive();
+                toto.STORE.commit(function() {
+                   toto.FX.changeButtons(toto.STORE.isActiveCurrentPage());
+                   toto.FX.sendBroadcast('reRenderPage');
+                });
+            }, false);
 
-        toto.resetButton.addEventListener('click', function() { 
+            toto.resetButton.addEventListener('click', function() { 
+                toto.FX.sendBroadcast('resetCheckboxes');
+            }, false);
 
-            toto.FX.sendBroadcast("resetCheckboxes");
-
-        }, false);
+        });
+       
     }
 }
 
 
-var inits = initStorage();
 
 document.addEventListener('DOMContentLoaded', function() {
 

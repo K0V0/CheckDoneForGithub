@@ -1,7 +1,5 @@
 
 function ContentFunctions() {
-	this.timer;
-	this.wait_time = 250;
 	this.init();
 }
 
@@ -10,23 +8,6 @@ ContentFunctions.prototype = {
 
 	init: function() {
 
-	},
-
-	currentPageHash: function() {
-		return MD5(stripUrlParams(window.location.href));
-	},
-
-	isThisPageEnabled: function(store_data) {
-		var current_page_hash = this.currentPageHash();
-		console.log(current_page_hash);
-		for (var i=store_data.length-1; i>=0; i--) {
-			if (store_data[i].id == current_page_hash) {
-				if (store_data[i].data.enabled === true) {
-					return true;
-				}
-			}
-		}
-		return false;
 	},
 
 	addMD5id: function(elem) {
@@ -45,27 +26,6 @@ ContentFunctions.prototype = {
 		}
 		elem.css({ 'position':'relative' });
 		elem.prepend(prep_elem);
-	},
-
-	getCheckboxState: function(list, id) {
-		var data = getData(list, id);
-		if (data === undefined) {
-			return false;
-		} else {
-			return data.data.enabled;
-		}
-	},
-
-	updateCheckboxState: function(list, id, state) {
-		var data = getData(list, id);
-		if (data === undefined) {
-			list.push({
-				id: id,
-				data: { enabled: state }
-			});
-		} else {
-			data.data.enabled = state;
-		}
 	}
 
 }

@@ -1,6 +1,6 @@
 
 function PopupFunctions() {
-  this.init();
+  	this.init();
 }
 
 PopupFunctions.prototype = {
@@ -23,7 +23,7 @@ PopupFunctions.prototype = {
 		chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
             chrome.tabs.sendMessage(tabs[0].id, {method: method}, function(response) {
                 if (!window.chrome.runtime.lastError) {
-                    console.log(method + ' message callback');
+                    //
                 }
             });  
         });
