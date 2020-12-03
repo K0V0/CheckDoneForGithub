@@ -24,17 +24,20 @@ body.main button {
 	font-size: 1.5em;
 	line-height: 1.5em;
 	color: white;
-	border: none;
+	border-width: 0.125em;
+	border-style: solid;
 	border-radius:0.25em;
 }
 
 body.main button {
-	transition: background-color 0.125s ease-in-out;
+	transition: background-color 0.175s ease-in-out, color 0.175s ease-in-out, border-color 0.175s ease-in-out;
 	cursor: pointer;
+	outline: none;
 }
 
 body.main button#enable {
 	background-color: #2EA44F;
+	border-color: #2EA44F;
 }
 
 body.main button#enable:before {
@@ -43,10 +46,13 @@ body.main button#enable:before {
 
 body.main button#enable:hover {
 	background-color: #2C974B;
+	border-color: #2C974B;
 }
 
 body.main button#enable.enabled {
-	background-color: #CB2431;
+	background-color: white;
+	color: #CB2431;
+	border-color: #888;
 }
 
 body.main button#enable.enabled:before {
@@ -55,13 +61,17 @@ body.main button#enable.enabled:before {
 
 body.main button#enable.enabled:hover {
 	background-color: #FF001B;
+	color:white;
+	border-color: #ff001B;
 }
 
 body.main button#reset {
 	background-color: #CB2431;
+	border-color: #CB2431;
 }
 
 body.main button#reset:hover {
 	background-color: #FF001B;
+	border-color: #FF001B;
 }
 

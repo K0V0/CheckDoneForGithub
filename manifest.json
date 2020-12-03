@@ -2,12 +2,18 @@
   "manifest_version": 2,
 
   "name": "CheckDone for GitHub readmes",
-  "description": "This extensions replaces list bullets in GitHub readme page with checkboxes",
+  "description": "This extensions transforms items list sections of GitHub readmes into checkable TODO lists.",
   "version": "1.0",
 
   "browser_action": {
    "default_icon": "icon.png",
    "default_popup": "popup.html"
+  },
+
+  "icons": { 
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
   },
 
   "content_scripts": [
