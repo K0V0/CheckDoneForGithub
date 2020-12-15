@@ -22,6 +22,7 @@
       "js": [
         "lib/jquery-3.5.1.min.js",
         "lib/md5.js",
+        "lib/frequentFireLimit.js",
         "lib/functions.js",
         "js/store_functions.js",
         "js/store.js",

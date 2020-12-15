@@ -1,4 +1,32 @@
 input.git-taskchecker-checkbox {
+	position: relative;
 	margin: 0 0.5em;
+	margin-left: 0.25em;
 	background-color: red;
+	font-size: 1em;
+	width:0.75em;
+	height:0.75em;
+	vertical-align: middle;
+}
+
+a.git-taskchecker-add-note {
+	font-size: 0.75em;
+	width: 1em;
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+    height: 1em;
+    cursor: pointer;
+    line-height: 1em;
+    border-radius: 50%;
+    margin-right: 0.5em; 
+    vertical-align: middle;
+    background-color: #ccc;
+    color: black;
+    font-weight: bold;
+}
+
+textarea.git-taskchecker-note-area {
+	width: 66%;
+	font-size: 0.875em;
 }
