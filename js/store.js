@@ -147,7 +147,7 @@ Store.prototype = {
 			return false;
 		} else {
 			var txt =  this.getCheckbox(id).data.text;
-			if (txt === undefined || txt === null || txt == "") {
+			if ((txt === undefined)||(txt === null)||(txt == "")) {
 				return false;
 			} else {
 				return txt;
