@@ -65,12 +65,12 @@ body.main button#enable.enabled:hover {
 	border-color: #ff001B;
 }
 
-body.main button#reset {
+body.main button#reset, body.main button#reset_all {
 	background-color: #CB2431;
 	border-color: #CB2431;
 }
 
-body.main button#reset:hover {
+body.main button#reset:hover, body.main button#reset_all:hover {
 	background-color: #FF001B;
 	border-color: #FF001B;
 }

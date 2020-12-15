@@ -10,6 +10,7 @@ input.git-taskchecker-checkbox {
 }
 
 a.git-taskchecker-add-note {
+	transition: background-color 0.25s ease-in-out;
 	font-size: 0.75em;
 	width: 1em;
     display: inline-block;
@@ -26,7 +27,20 @@ a.git-taskchecker-add-note {
     font-weight: bold;
 }
 
+a.git-taskchecker-add-note::before {
+	content: '+';
+}
+
+a.git-taskchecker-add-note.reset {
+	background-color: #fcc;
+}
+
+a.git-taskchecker-add-note.reset::before {
+	content: 'X';
+}
+
 textarea.git-taskchecker-note-area {
+	display: block;
 	width: 66%;
 	font-size: 0.875em;
 }

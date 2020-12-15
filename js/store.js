@@ -10,7 +10,8 @@ localStorage.pages =
 					{
 						id: <md5 hash>,
 						data: {
-							enabled: <boolean>
+							enabled: <boolean>,
+							note_text: <text>
 						}
 					}
 				]
@@ -119,7 +120,8 @@ Store.prototype = {
 				this.pageCheckboxes,
 				id,
 				{
-					enabled: false
+					enabled: false,
+					text: null
 				}
 			);
 		}
@@ -137,6 +139,25 @@ Store.prototype = {
 	setCheckbox: function(id, state) {
 		var chkbx = this.getOrCreateCheckbox(id);
 		chkbx.data.enabled = state;
+	},
+
+	isAnyText: function(id) {
+		var chkbx = this.getCheckbox(id);
+		if (chkbx === null) {
+			return false;
+		} else {
+			var txt =  this.getCheckbox(id).data.text;
+			if (txt === undefined || txt === null || txt == "") {
+				return false;
+			} else {
+				return txt;
+			}
+		}
+	},
+
+	setText: function(id, text) {
+		var chkbx = this.getOrCreateCheckbox(id);
+		chkbx.data.text = text;
 	},
 
 	commit: function(callback) {

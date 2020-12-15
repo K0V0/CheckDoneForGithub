@@ -3,6 +3,7 @@ function Popup() {
   this.STORE;
   this.enableButton = document.getElementById('enable');
   this.resetButton = document.getElementById('reset');
+  this.resetAllButton = document.getElementById('reset_all');
   this.init();
 }
 
@@ -29,6 +30,10 @@ Popup.prototype = {
 
             toto.resetButton.addEventListener('click', function() { 
                 toto.FX.sendBroadcast('resetCheckboxes');
+            }, false);
+
+            toto.resetAllButton.addEventListener('click', function() { 
+                toto.FX.sendBroadcast('resetAll');
             }, false);
 
         });

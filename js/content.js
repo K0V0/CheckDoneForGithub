@@ -40,10 +40,18 @@ Content.prototype = {
 
 		// draw checkbox with belonging state according to data from store
 		totok.mdContainer.find('li').each(function() {
-			totok.FX.appendNoteButton($(this));
+			var id = $(this).attr('id');
+			totok.FX.appendNoteButton(
+				$(this),
+				totok.STORE.isAnyText(id)
+			);
 			totok.FX.appendCheckbox(
 				$(this), 
-				totok.STORE.isCheckboxEnabled($(this).attr('id'))
+				totok.STORE.isCheckboxEnabled(id)
+			);
+			totok.FX.appendNoteArea(
+				$(this),
+				totok.STORE.isAnyText(id)
 			);
 		});
 
@@ -62,7 +70,14 @@ Content.prototype = {
 
 		totok.addNoteButtons.on('click', function(e) {
 			e.preventDefault();
-			totok.FX.appendNoteArea($(this).parent('li'));
+			var parentElem = $(this).parent('li');
+			if ($(this).hasClass('reset')) {
+				totok.FX.removeNoteArea(parentElem.children('textarea'));
+				$(this).removeClass('reset');
+			} else {
+				totok.FX.appendNoteArea(parentElem, true);
+				$(this).addClass('reset');
+			}
 		});
 
 		// reaguje aj na programaticku zmenu
@@ -74,13 +89,14 @@ Content.prototype = {
 			totok.STORE.commit();
 		});
 
-		// do not work on elements appended by user action(s)
-		/*totok.noteAreas.on('change', function() {
-			console.log("idee");
-		});*/
-
-		$(document).frequentFireLimit('input', totok.autosaveTimeDelay, 'textarea.git-taskchecker-note-area', function() {
-			console.log("ideffffffe");
+		// on document - because elements added dynamically by user action
+		//$(document).frequentFireLimit('input', totok.autosaveTimeDelay, 'textarea.git-taskchecker-note-area', function() {
+		$(document).on('input', 'textarea.git-taskchecker-note-area', function() {
+			totok.STORE.setText(
+				$(this).parent('li').attr('id'),
+				$(this).val()
+			);
+			totok.STORE.commit();
 		});
 	},
 
@@ -89,13 +105,19 @@ Content.prototype = {
 		// data are persisted if in future turn then user on
 		$(document).find('input.git-taskchecker-checkbox').remove();
 		$(document).find('a.git-taskchecker-add-note').remove();
+		$(document).find('textarea.git-taskchecker-note-area').remove();
 	},
 
 	resetCheckboxes: function() {
-		this.listItems.attr('checked', false);
-		this.listItems.trigger('change');
+		this.FX.resetCheckbox($(document).find('input.git-taskchecker-checkbox'));
 		this.STORE.commit();
 	},
+
+	resetAll: function() {
+		this.FX.resetCheckbox($(document).find('input.git-taskchecker-checkbox'));
+		this.FX.removeNoteArea($(document).find('textarea.git-taskchecker-note-area'));
+		this.STORE.commit();
+	}
 }
 
 
@@ -111,9 +133,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     	// just hide them
     	C.removeCheckboxes();
     } else if (rm == "resetCheckboxes") {
-    	// reset all to FALSE
+    	// reset all checkboxes to FALSE
     	C.resetCheckboxes();
-    } 
+    } else if (rm == "resetAll") {
+    	// reset all, remove notes
+    	C.resetAll();
+    }
 });
 
 
